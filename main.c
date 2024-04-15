@@ -31,7 +31,7 @@ static void cleanup()
 
 int main()
 {
-	mapping(&mem, "assets/payload.bin");
+	mapping(&mem, "payload/payload.bin");
 	// *(inst_t *)(mem + 0) = 0x13;
 	// *(inst_t *)(mem + 4) = 0x600293;
 	// *(inst_t *)(mem + 8) = 0x428293;

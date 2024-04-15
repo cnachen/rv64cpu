@@ -3,6 +3,7 @@
 .idea/
 compile_flags.txt
 rv64
+payload.*
 
 # Prerequisites
 *.d
