@@ -5,7 +5,7 @@
 #include "cpu.h"
 
 #define EXPORT(_op, _type, _piece) \
-static void register_##_op() \
+static void register_##_op(struct cpu *cpu) \
 { \
 	struct instproc *proc = malloc(sizeof(struct instproc)); \
 	strcpy(proc->mnemonic, #_op);	\
@@ -32,7 +32,7 @@ static void register_##_op() \
 	PLACE(_t, _a) \
 	PLACE3(_t, _b, _c, _d)
 
-#define USE(op) register_##op()
+#define USE(op) register_##op(cpu)
 
 reg_t *wgpr(struct hart *, inst_t);
 

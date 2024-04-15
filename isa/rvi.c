@@ -1,11 +1,9 @@
-#include "isa.h"
-#include "types.h"
 #include "kits.h"
+#include "types.h"
 #include "cpu.h"
+#include "inst.h"
 #include <stdlib.h>
 #include <string.h>
-
-extern struct cpu *cpu;
 
 static int lui(struct hart *hart, instpiece_t piece)
 {
@@ -54,7 +52,7 @@ static int lw(struct hart *hart, instpiece_t piece)
 {
 	PLACE3(i, rd, rs1, imm12);
 
-	*wgpr(hart, rd) = sext(*(uint32_t *)(cpu->mem + hart->gprs[rs1] + sext(imm12, 12)), 32);
+	*wgpr(hart, rd) = sext(*(uint32_t *)(hart->mem + hart->gprs[rs1] + sext(imm12, 12)), 32);
 
 	return 0;
 }
@@ -64,7 +62,7 @@ static int sw(struct hart *hart, instpiece_t piece)
 {
 	PLACE4(s, rs1, rs2, imm12hi, imm12lo);
 
-	*(uint32_t *)(cpu->mem + hart->gprs[rs1] + sext(from_imm12hilo(imm12hi, imm12lo), 12)) = hart->gprs[rs2] & mask(32);
+	*(uint32_t *)(hart->mem + hart->gprs[rs1] + sext(from_imm12hilo(imm12hi, imm12lo), 12)) = hart->gprs[rs2] & mask(32);
 
 	return 0;
 }
@@ -130,7 +128,7 @@ static int and(struct hart *hart, instpiece_t piece)
 }
 EXPORT(and, INSTTYPE_R, 0x7033)
 
-void register_rvi()
+void register_extension(struct cpu *cpu)
 {
 	USE(lui);
 	USE(auipc);

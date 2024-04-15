@@ -1,14 +1,32 @@
 #include "inst.h"
 #include "types.h"
 
-extern struct cpu *cpu;
+#include <stdlib.h>
+
+void register_instproc(struct cpu *cpu, struct instproc *proc)
+{
+	struct instproc *s = find_instproc(cpu, proc->piece);
+	if (!s) {
+		struct instproc *b = malloc(sizeof(struct instproc)), *p;
+		b->next = cpu->instvec;
+
+		for (p = b; p != NULL && p->next != NULL; p = p->next) {}
+
+		p->next = proc;
+		cpu->instvec = b->next;
+		free(b);
+	} else {
+		proc->sibling = s->sibling;
+		s->sibling = proc;
+	}
+}
 
 instpiece_t fetch_inst(struct hart *hart, uint8_t *mem)
 {
 	inst_t ret = *(inst_t *)(mem + hart->pc);
 	printf("inst:\t%08x\n", ret);
 
-	struct instproc *s = find_instproc(cpu, (instpiece_t)ret);
+	struct instproc *s = find_instproc(hart->cpu, (instpiece_t)ret);
 	printf("op:\t%s\n", s->mnemonic);
 
 	return (instpiece_t)ret;
@@ -16,7 +34,7 @@ instpiece_t fetch_inst(struct hart *hart, uint8_t *mem)
 
 void execute_inst(struct hart *hart, instpiece_t piece)
 {
-	struct instproc *s = find_instproc(cpu, piece);
+	struct instproc *s = find_instproc(hart->cpu, piece);
 
 	if (s) {
 		((int (*)(struct hart*, instpiece_t))(s->op))(hart, piece);

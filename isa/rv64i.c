@@ -1,7 +1,7 @@
-#include "isa.h"
-#include "types.h"
 #include "kits.h"
+#include "types.h"
 #include "cpu.h"
+#include "inst.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -18,7 +18,7 @@ static int addiw(struct hart *hart, instpiece_t piece)
 }
 EXPORT(addiw, INSTTYPE_I, 0x1b)
 
-void register_rv64i()
+void register_extension(struct cpu *cpu)
 {
 	USE(addiw);
 }

@@ -1,6 +1,8 @@
 # Project
 .vscode/
+.idea/
 compile_flags.txt
+rv64
 
 # Prerequisites
 *.d

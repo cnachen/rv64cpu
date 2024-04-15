@@ -12,6 +12,9 @@ struct hart {
 	reg_t gprs[32];
 	reg_t csrs[NCSR];
 
+	uint8_t *mem;
+	struct cpu *cpu;
+
 #ifdef RV64F
 	reg_t fprs[32];
 #endif
@@ -22,8 +25,6 @@ struct cpu {
 	uint8_t *mem;
 	struct instproc *instvec;
 };
-
-void register_instproc(struct cpu *, struct instproc *);
 
 void run_cpu(struct cpu *, uint8_t *, addr_t);
 

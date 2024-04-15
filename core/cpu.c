@@ -1,6 +1,6 @@
 #include "cpu.h"
 #include "inst.h"
-#include "isa.h"
+#include "dl.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -38,24 +38,6 @@ static void single_step(struct hart * hart)
 	}
 }
 
-void register_instproc(struct cpu *cpu, struct instproc *proc)
-{
-	struct instproc *s = find_instproc(cpu, proc->piece);
-	if (!s) {
-		struct instproc *b = malloc(sizeof(struct instproc)), *p;
-		b->next = cpu->instvec;
-
-		for (p = b; p != NULL && p->next != NULL; p = p->next) {}
-
-		p->next = proc;
-		cpu->instvec = b->next;
-		free(b);
-	} else {
-		proc->sibling = s->sibling;
-		s->sibling = proc;
-	}
-}
-
 void run_cpu(struct cpu *cpu, uint8_t *mem, addr_t entry)
 {
 	instpiece_t piece;
@@ -63,11 +45,12 @@ void run_cpu(struct cpu *cpu, uint8_t *mem, addr_t entry)
 	struct hart *hart0 = &cpu->harts[0];
 
 	hart0->pc = entry;
+	hart0->mem = cpu->mem;
+	hart0->cpu = cpu;
 	hart0->pcimm = 4;
 	hart0->mdbg = -1;
 
-	register_rvi();
-	register_rv64i();
+	install_extension(cpu);
 
 	while (1) {
 		piece = fetch_inst(hart0, mem);

@@ -3,7 +3,7 @@
 
 #include "cpu.h"
 
-void register_inst(struct cpu *cpu, struct instproc *proc);
+void register_instproc(struct cpu *, struct instproc *);
 
 instpiece_t fetch_inst(struct hart *, uint8_t *);
 
