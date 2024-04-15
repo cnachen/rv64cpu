@@ -2,12 +2,8 @@ CC = clang
 MAKE = make
 NAME = rv64cpu
 
-all: core isa
-
-core:
+all:
 	$(MAKE) -C core
-
-isa:
 	$(MAKE) -C isa
 
 clean:

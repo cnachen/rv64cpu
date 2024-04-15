@@ -21,10 +21,16 @@ void mapping(uint8_t **mem, const char path[])
 }
 
 struct cpu *cpu;
+static uint8_t *mem;
+
+static void cleanup()
+{
+	free(mem);
+	free(cpu);
+}
 
 int main()
 {
-	uint8_t *mem;
 	mapping(&mem, "assets/payload.bin");
 	// *(inst_t *)(mem + 0) = 0x13;
 	// *(inst_t *)(mem + 4) = 0x600293;
@@ -35,9 +41,8 @@ int main()
 	cpu->mem = mem;
 	cpu->instvec = NULL;
 
+	atexit(cleanup);
 	run_cpu(cpu, mem, 0x0);
 
-	free(mem);
-	free(cpu);
 	return 0;
 }
