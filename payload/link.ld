@@ -3,7 +3,7 @@ ENTRY( _entry )
 
 MEMORY
 {
-  RAM (rwx) : ORIGIN = 0x80000000, LENGTH = 128M
+  RAM (rwx) : ORIGIN = 0x80000000, LENGTH = 64M
 }
 
 PHDRS

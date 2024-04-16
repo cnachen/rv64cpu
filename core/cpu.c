@@ -1,25 +1,29 @@
 #include "cpu.h"
 #include "inst.h"
 #include "dl.h"
+#include "colors.h"
 
 #include <stdlib.h>
 #include <string.h>
 
 static void print_regs(struct hart *hart)
 {
-	int i;
-	int d = 5;
+	printf(GREEN);
 	printf("pc:\t%016llx ", hart->pc);
 	printf("ra:\t%016llx ", hart->gprs[1]);
-	printf("sp:\t%016llx ", hart->gprs[2]);
+	printf("sp:\t%016llx\n", hart->gprs[2]);
+	printf(RESET);
+	printf("gp:\t%016llx ", hart->gprs[3]);
+	printf("tp:\t%016llx ", hart->gprs[4]);
 	printf("fp:\t%016llx\n", hart->gprs[8]);
-	for (i = 0; i < 3; i++) {
-		printf("x%d:\t%016llx ", i + d, hart->gprs[i + d]);
-		if (i % 3 == 2)
-			printf("\n");
-	}
-	if (i % 3 != 0)
-		printf("\n");
+	printf(GREEN);
+	printf("t0:\t%016llx ", hart->gprs[5]);
+	printf("t1:\t%016llx ", hart->gprs[6]);
+	printf("t2:\t%016llx\n", hart->gprs[7]);
+	printf(RESET);
+	printf("a0:\t%016llx ", hart->gprs[10]);
+	printf("a1:\t%016llx ", hart->gprs[11]);
+	printf("a2:\t%016llx\n", hart->gprs[12]);
 }
 
 static void single_step(struct hart * hart)

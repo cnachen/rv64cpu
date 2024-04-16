@@ -1,10 +1,13 @@
+.equ STACK, 0x3000000
+
 .global _entry
 .section .text
 _entry:
-	la sp, stack
+	la sp, STACK
 	li t0, 0xf123456789abcdef
 	call start
 	mv t0, a0
+	j 1f
 
 _main:
 	auipc t1, 0xab
@@ -35,11 +38,7 @@ _main:
 	j _entry
 
 nothing:
-	.skip 2048
-
-# stack is still buggy
-stack:
-	.space 8192
+	.skip 64
 
 .section .rodata
 msg:

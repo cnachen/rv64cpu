@@ -24,7 +24,7 @@ void register_instproc(struct cpu *cpu, struct instproc *proc)
 instpiece_t fetch_inst(struct hart *hart, uint8_t *mem)
 {
 	inst_t ret = *(inst_t *)(mem + hart->pc);
-	printf("inst:\t%08x\n", ret);
+	printf("inst:\t%08x\t ", ret);
 
 	struct instproc *s = find_instproc(hart->cpu, (instpiece_t)ret);
 	printf("op:\t%s\n", s->mnemonic);

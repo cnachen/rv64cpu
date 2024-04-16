@@ -7,4 +7,7 @@
 #define NCPU 1
 #define NCSR 4096
 
+// In hex, 0x4000000
+#define MEMSIZE (64 * 1024 * 1024)
+
 #endif

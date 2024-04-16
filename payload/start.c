@@ -1,11 +1,15 @@
 #include <math.h>
 
-int test()
+int test(int n)
 {
-	return (int)sqrt(114514);
+	static int i = 0;
+	return ++i + n;
 }
 
 int start()
 {
-	return test();
+	int sum = 0;
+	for (int i = 0; i < 2; i++)
+		sum += test(114514);
+	return sum;
 }

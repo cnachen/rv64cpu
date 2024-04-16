@@ -13,7 +13,7 @@ void mapping(uint8_t **mem, const char path[])
 
 	f = fopen(path, "r");
 	size = 8 * M;
-	*mem = malloc(size);
+	*mem = malloc(MEMSIZE);
 
 	for (i = 0; (c = fgetc(f)) != EOF; i++) {
 		if (i >= size - 1)

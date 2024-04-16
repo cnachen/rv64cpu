@@ -2,7 +2,7 @@ PREFIX = riscv64-unknown-elf
 NAME = payload
 
 all:
-	$(PREFIX)-gcc -march=rv64i -mabi=lp64 -O0 -nostdlib -T link.ld -o $(NAME).elf $(shell find -E . -iregex  ".*\.(c|s)")
+	$(PREFIX)-gcc -mcmodel=medany -march=rv64i -mabi=lp64 -O0 -nostdlib -T link.ld -o $(NAME).elf $(shell find -E . -iregex  ".*\.(c|s)")
 	$(PREFIX)-objcopy -O binary $(NAME).elf $(NAME).bin
 
 clean:
