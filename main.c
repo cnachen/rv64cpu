@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define M (1024 * 1024)
+
 void mapping(uint8_t **mem, const char path[])
 {
 	FILE *f;
@@ -10,7 +12,7 @@ void mapping(uint8_t **mem, const char path[])
 	int i, size;
 
 	f = fopen(path, "r");
-	size = 1;
+	size = 8 * M;
 	*mem = malloc(size);
 
 	for (i = 0; (c = fgetc(f)) != EOF; i++) {

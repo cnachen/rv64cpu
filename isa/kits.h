@@ -46,6 +46,8 @@ reg_t from_jimm20(inst_t);
 
 reg_t from_imm12hilo(inst_t imm12hi, inst_t imm12lo);
 
+reg_t from_bimm12hilo(inst_t bimm12hi, inst_t bimm12lo);
+
 inst_t span(inst_t, int, int);
 
 #endif

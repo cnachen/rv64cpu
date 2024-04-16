@@ -1,11 +1,23 @@
 .global _entry
 .section .text
 _entry:
+	la sp, stack
+	li t0, 0xf123456789abcdef
+	call start
+	mv t0, a0
+
+_main:
 	auipc t1, 0xab
+	li t1, 0x12345678
+
+	################
 	li t1, 0xfff
 	addi t0, zero, 0
-	j 2f
+	addi t1, zero, 3
+	bge t1, t0, 1f
+	nop
 1:
+	beq t0, t1, 2f
 	addi t0, t0, 1
 	j 1b
 2:
@@ -21,6 +33,13 @@ _entry:
 	sw t0, 0(t1)
 	addi t0, zero, 0
 	j _entry
+
+nothing:
+	.skip 2048
+
+# stack is still buggy
+stack:
+	.space 8192
 
 .section .rodata
 msg:

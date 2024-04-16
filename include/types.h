@@ -4,17 +4,19 @@
 #include <stdint.h>
 #include "conf.h"
 
+typedef int64_t ireg64_t;
 typedef uint64_t reg64_t;
 typedef uint32_t inst_t;
 typedef uint16_t cinst_t;
 
 #ifdef RV64
-typedef uint64_t addr_t;
-typedef uint64_t reg_t;
+	typedef uint64_t addr_t;
+	typedef uint64_t reg_t;
+	typedef int64_t ireg_t;
 
 #else
-typedef uint32_t addr_t;
-typedef uint32_t reg_t;
+	typedef uint32_t addr_t;
+	typedef uint32_t reg_t;
 
 #endif
 

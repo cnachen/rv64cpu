@@ -46,6 +46,19 @@ reg_t from_imm12hilo(inst_t imm12hi, inst_t imm12lo)
 	return r;
 }
 
+reg_t from_bimm12hilo(inst_t bimm12hi, inst_t bimm12lo)
+{
+	reg_t r = (reg_t)span(bimm12hi, 6, 6);
+	r <<= 1;
+	r |= span(bimm12lo, 0, 0);
+	r <<= 6;
+	r |= span(bimm12hi, 5, 0);
+	r <<= 4;
+	r |= span(bimm12lo, 4, 1);
+	r <<= 1;
+	return r;
+}
+
 inst_t span(inst_t inst, int end, int begin)
 {
 	int m = mask(end - begin + 1);

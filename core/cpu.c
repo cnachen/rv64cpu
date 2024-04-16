@@ -9,8 +9,11 @@ static void print_regs(struct hart *hart)
 {
 	int i;
 	int d = 5;
-	printf("pc:\t%016llx\n", hart->pc);
-	for (i = 0; i < 2; i++) {
+	printf("pc:\t%016llx ", hart->pc);
+	printf("ra:\t%016llx ", hart->gprs[1]);
+	printf("sp:\t%016llx ", hart->gprs[2]);
+	printf("fp:\t%016llx\n", hart->gprs[8]);
+	for (i = 0; i < 3; i++) {
 		printf("x%d:\t%016llx ", i + d, hart->gprs[i + d]);
 		if (i % 3 == 2)
 			printf("\n");
@@ -28,10 +31,10 @@ static void single_step(struct hart * hart)
 	for (i = 0; cmd[i] != '\n'; i++) {}
 	cmd[i] = 0;
 
-	if (!strcmp(cmd, "n"))
-		return;
 	if (!strcmp(cmd, "q"))
 		exit(0);
+	if (!strcmp(cmd, "n"))
+		return;
 	if (!strcmp(cmd, "c")) {
 		hart->mdbg = 0;
 		return;
