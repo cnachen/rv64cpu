@@ -1,14 +1,14 @@
 # rv64cpu
 An ISA simulator for 64-bit RISC-V.
 
-To build core and supported isa extensions, apply
+Support bare metal C, see `./payload`.
+
+To build core, supported ISA extensions and payload, apply
 ```
-make -C core
-make -C isa
+make
 ```
 
-To build test files, apply
+To disassemble payload, apply
 ```
-$(PREFIX)-gcc -march=rv64i -mabi=lp64 -O0 -nostdlib -T link.ld -o $(NAME).elf $(shell find -E . -iregex  ".*\.(c|s)")
-$(PREFIX)-objcopy -O binary $(NAME).elf $(NAME).bin
+make -C payload dump
 ```
