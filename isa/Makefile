@@ -1,5 +1,5 @@
 INCLUDE = -I. -I../include -I../isa
-CFLAGS = -shared -Wunused
+CFLAGS = -shared -Wunused -fpic
 
 all:
 	cc rvi.c kits.c ../core/disasm.c ../core/inst.c $(CFLAGS) $(INCLUDE) -o ../rvi.so
