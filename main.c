@@ -31,9 +31,12 @@ static void cleanup()
 	free(cpu);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-	mapping(&mem, "payload/payload.bin");
+	if (argc > 1)
+		mapping(&mem, argv[1]);
+	else
+		mapping(&mem, "payload/payload.bin");
 	// *(inst_t *)(mem + 0) = 0x13;
 	// *(inst_t *)(mem + 4) = 0x600293;
 	// *(inst_t *)(mem + 8) = 0x428293;

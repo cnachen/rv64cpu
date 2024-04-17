@@ -7,6 +7,16 @@
 
 extern struct cpu *cpu;
 
+static int lwu(struct hart *hart, instpiece_t piece)
+{
+	PLACE3(i, rd, rs1, imm12);
+
+	*wgpr(hart, rd) = zext(*(uint32_t *)(hart->mem + hart->gprs[rs1] + sext(imm12, 12)), 32);
+
+	return 0;
+}
+EXPORT(lwu, INSTTYPE_I, 0x6003)
+
 static int ld(struct hart *hart, instpiece_t piece)
 {
 	PLACE3(i, rd, rs1, imm12);
@@ -26,6 +36,37 @@ static int sd(struct hart *hart, instpiece_t piece)
 	return 0;
 }
 EXPORT(sd, INSTTYPE_S, 0x3023)
+
+static int slli(struct hart *hart, instpiece_t piece)
+{
+	PLACE3(i, rd, rs1, imm12);
+
+	*wgpr(hart, rd) = hart->gprs[rs1] << span(imm12, 5, 0);
+
+	return 0;
+}
+EXPORT(slli, INSTTYPE_I, 0x1013)
+
+static int srli(struct hart *hart, instpiece_t piece)
+{
+	PLACE3(i, rd, rs1, imm12);
+
+	*wgpr(hart, rd) = hart->gprs[rs1] >> span(imm12, 5, 0);
+
+	return 0;
+}
+EXPORT(srli, INSTTYPE_I, 0x5013)
+
+static int srai(struct hart *hart, instpiece_t piece)
+{
+	PLACE3(i, rd, rs1, imm12);
+
+	*wgpr(hart, rd) = sext(hart->gprs[rs1] >> span(imm12, 5, 0), 64 - span(imm12, 5, 0));
+
+	return 0;
+}
+EXPORT(srai, INSTTYPE_I, 0x40005013)
+
 
 static int addiw(struct hart *hart, instpiece_t piece)
 {
@@ -51,16 +92,12 @@ EXPORT(addw, INSTTYPE_R, 0x3b)
 
 void register_extension(struct cpu *cpu)
 {
-	/*
 	USE(lwu);
-	*/
 	USE(ld);
 	USE(sd);
-	/*
 	USE(slli);
 	USE(srli);
 	USE(srai);
-	*/
 	USE(addiw);
 	/*
 	USE(slliw);

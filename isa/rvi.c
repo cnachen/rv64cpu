@@ -162,7 +162,7 @@ static int lbu(struct hart *hart, instpiece_t piece)
 {
 	PLACE3(i, rd, rs1, imm12);
 
-	*wgpr(hart, rd) = *(uint8_t *)(hart->mem + hart->gprs[rs1] + sext(imm12, 12));
+	*wgpr(hart, rd) = zext(*(uint8_t *)(hart->mem + hart->gprs[rs1] + sext(imm12, 12)), 8);
 
 	return 0;
 }
@@ -172,7 +172,7 @@ static int lhu(struct hart *hart, instpiece_t piece)
 {
 	PLACE3(i, rd, rs1, imm12);
 
-	*wgpr(hart, rd) = *(uint16_t *)(hart->mem + hart->gprs[rs1] + sext(imm12, 12));
+	*wgpr(hart, rd) = zext(*(uint16_t *)(hart->mem + hart->gprs[rs1] + sext(imm12, 12)), 16);
 
 	return 0;
 }
@@ -269,36 +269,6 @@ static int andi(struct hart *hart, instpiece_t piece)
 }
 EXPORT(andi, INSTTYPE_I, 0x7013)
 
-static int slli(struct hart *hart, instpiece_t piece)
-{
-	PLACE3(r, rd, rs1, rs2);
-
-	*wgpr(hart, rd) = hart->gprs[rs1] << rs2;
-
-	return 0;
-}
-EXPORT(slli, INSTTYPE_R, 0x1013)
-
-static int srli(struct hart *hart, instpiece_t piece)
-{
-	PLACE3(r, rd, rs1, rs2);
-
-	*wgpr(hart, rd) = hart->gprs[rs1] >> rs2;
-
-	return 0;
-}
-EXPORT(srli, INSTTYPE_R, 0x5013)
-
-static int srai(struct hart *hart, instpiece_t piece)
-{
-	PLACE3(r, rd, rs1, rs2);
-
-	*wgpr(hart, rd) = sext(hart->gprs[rs1] >> rs2, 64 - rs2);
-
-	return 0;
-}
-EXPORT(srai, INSTTYPE_R, 0x40005013)
-
 static int add(struct hart *hart, instpiece_t piece)
 {
 	PLACE3(r, rd, rs1, rs2);
@@ -365,9 +335,11 @@ void register_extension(struct cpu *cpu)
 	USE(xori);
 	USE(ori);
 	USE(andi);
+	/*
 	USE(slli);
 	USE(srli);
 	USE(srai);
+	*/
 	USE(add);
 	USE(sub);
 	/*
