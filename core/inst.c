@@ -28,7 +28,7 @@ instpiece_t fetch_inst(struct hart *hart, uint8_t *mem)
 	printf("inst:\t%08x\t ", ret);
 
 	struct instproc *s = find_instproc(hart->cpu, (instpiece_t)ret);
-	printf("op:\t%s %s\n", s->mnemonic, disasm(s->type, (instpiece_t)ret));
+	printf("op:\t%s\n", disasm(s->mnemonic, s->type, (instpiece_t)ret));
 
 	return (instpiece_t)ret;
 }
