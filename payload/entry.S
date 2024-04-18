@@ -1,45 +1,43 @@
 .equ STACK, 0x3000000
+.equ SYS_open, 1024
+.equ SYS_write, 64
 
 .global _entry
 .section .text
 _entry:
 	la sp, STACK
-	li t0, 0xf123456789abcdef
-	call start
-	mv t0, a0
-	j 1f
+	li t0, 0
+	li t1, 6
 
-_main:
-	auipc t1, 0xab
-	li t1, 0x12345678
+	li a7, SYS_open
+	la a0, stdout
+	li a1, 0x2
+	ecall
 
-	################
-	li t1, 0xfff
-	addi t0, zero, 0
-	addi t1, zero, 3
-	bge t1, t0, 1f
-	nop
+	addi sp, sp, -16
+	sd a0, 8(sp)
+
 1:
-	beq t0, t1, 2f
+	li a7, SYS_write
+	ld a0, 8(sp)
+	la a1, msg
+	li a2, 14
+	ecall
+
 	addi t0, t0, 1
+	bne t0, t1, 1b
+
+	addi sp, sp, 16
+	call start
+
+1:
 	j 1b
-2:
-	la t0, _entry
-	lw t1, 0(t0)
-	srli t0, t1, 12
-	addi t0, t0, 1
-	slli t0, t0, 12
-	li t2, 0xfff
-	and t1, t1, t2 
-	or t0, t1, t0
-	la t1, _entry
-	sw t0, 0(t1)
-	addi t0, zero, 0
-	j _entry
 
 nothing:
 	.skip 64
 
 .section .rodata
+stdout:
+	.asciz "/dev/stdout"
 msg:
-	.ascii "Hello, World!\n"
+	.asciz "Hello, World!\n"

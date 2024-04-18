@@ -12,6 +12,25 @@ struct hart {
 	reg_t gprs[32];
 	reg_t csrs[NCSR];
 
+	reg_t sstatus;
+	reg_t sie;
+	reg_t stvec;
+	reg_t sepc;
+	reg_t scause;
+	reg_t stval;
+	reg_t sip;
+
+	reg_t mstatus;
+	reg_t misa;
+	reg_t mie;
+	reg_t mtvec;
+	reg_t mepc;
+	reg_t mcause;
+	reg_t mip;
+
+	reg_t mcycle;
+	reg_t minstret;
+
 	uint8_t *mem;
 	struct cpu *cpu;
 

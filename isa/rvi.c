@@ -309,6 +309,8 @@ static int and(struct hart *hart, instpiece_t piece)
 }
 EXPORT(and, INSTTYPE_R, 0x7033)
 
+#include "ecall.c"
+
 void register_extension(struct cpu *cpu)
 {
 	USE(lui);
@@ -355,7 +357,9 @@ void register_extension(struct cpu *cpu)
 	/*
 	USE(fence);
 	USE(fence_i);
+	*/
 	USE(ecall);
+	/*
 	USE(ebreak);
 	USE(csrrw);
 	USE(csrrs);
