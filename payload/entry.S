@@ -1,31 +1,32 @@
 .equ STACK, 0x3000000
 .equ SYS_open, 1024
 .equ SYS_write, 64
+.equ SYS_read, 63
 
 .global _entry
 .section .text
 _entry:
 	la sp, STACK
-	li t0, 0
-	li t1, 6
 
 	li a7, SYS_open
-	la a0, stdout
-	li a1, 0x2
+	la a0, file
+	li a1, 0
 	ecall
 
 	addi sp, sp, -16
 	sd a0, 8(sp)
 
-1:
-	li a7, SYS_write
+	li a7, SYS_read
 	ld a0, 8(sp)
-	la a1, msg
-	li a2, 14
+	la a1, nothing
+	li a2, 64
 	ecall
 
-	addi t0, t0, 1
-	bne t0, t1, 1b
+	li a7, SYS_write
+	li a0, 1
+	la a1, nothing
+	li a2, 64
+	ecall
 
 	addi sp, sp, 16
 	call start
@@ -37,7 +38,7 @@ nothing:
 	.skip 64
 
 .section .rodata
-stdout:
-	.asciz "/dev/stdout"
-msg:
+file:
+	.asciz "/etc/hosts"
+message:
 	.asciz "Hello, World!\n"
