@@ -20,6 +20,8 @@ void mapping(uint8_t **mem, const char path[])
 			*mem = realloc(*mem, size *= 2);
 		*(*mem + i) = (c & 0xff);
 	}
+
+	fclose(f);
 }
 
 struct cpu *cpu;

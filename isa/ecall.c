@@ -12,6 +12,12 @@
 static int ecall(struct hart *hart, instpiece_t piece)
 {
 	switch (hart->gprs[a7]) {
+	case SYS_close:
+		*wgpr(hart, a0) = close(hart->gprs[a0]);
+		break;
+	case SYS_exit:
+		exit(hart->gprs[a0]);
+		break;
 	case SYS_read:
 		*wgpr(hart, a0) = read(hart->gprs[a0], M(a1), hart->gprs[a2]);
 		break;

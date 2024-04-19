@@ -1,7 +1,6 @@
+.include "defs.inc"
+
 .equ STACK, 0x3000000
-.equ SYS_open, 1024
-.equ SYS_write, 64
-.equ SYS_read, 63
 
 .global _entry
 .section .text
@@ -20,6 +19,10 @@ _entry:
 	ld a0, 8(sp)
 	la a1, nothing
 	li a2, 64
+	ecall
+
+	li a7, SYS_close
+	ld a0, 8(sp)
 	ecall
 
 	li a7, SYS_write
